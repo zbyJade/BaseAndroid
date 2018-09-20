@@ -1,0 +1,73 @@
+Butterknife（黄油刀）配置和使用
+
+1. 基本配置(注意gradle和butterknife版本)
+   ① 在project的build.gradle中添加如下代码：
+      dependencies {
+          classpath 'com.android.tools.build:gradle:3.0.1'
+          classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'  //添加这一行
+       }
+   ② 在App的build.gradle中添加如下代码：
+      apply plugin: 'com.jakewharton.butterknife'
+   ③ 在App的build.gradle中的dependencies里添加：
+      compile 'com.jakewharton:butterknife:8.8.1'
+      annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+2. 绑定
+   ① 在Activity中绑定
+      在Activity的onCreate中setContentView后，使用ButterKnife.bind(this)进行绑定
+      项目中我是在BaseActivity中进行绑定
+   ② 在Fragment中绑定
+       @Override
+       public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
+           View view = inflater.inflate(R.layout.fragment, container, false);
+           //返回一个Unbinder值（进行解绑），注意这里的this不能使用getActivity()
+           unbinder = ButterKnife.bind(this, view);
+           return view;
+       }
+
+       /**
+        * onDestroyView中进行解绑操作
+        */
+       @Override
+       public void onDestroyView() {
+           super.onDestroyView();
+           unbinder.unbind();
+       }
+   ③ 在Adapter中绑定ButterKnife:
+      在Adapter的ViewHolder中使用
+      static class ViewHolder {
+          @BindView(R.id.name) TextView name;
+          public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+          }
+       }
+
+3. 绑定资源
+   @BindView(R2.id.button) //绑定Button控件
+   public Button button ;
+   @BindString(R2.string.app_name)  //绑定资源文件中string字符串
+   String str;
+   @BindArray(R2.array.city)  //绑定string里面array数组
+   String [] citys ;
+   @BindBitmap( R2.mipmap.bm)//绑定Bitmap 资源
+   public Bitmap bitmap ;
+   @BindColor( R2.color.colorAccent ) //具体色值在color文件中
+   int black ;  //绑定一个颜色值
+   @BindBool @BindDimen @BindFloat @BindInt @BindDrawable
+
+   @OnClick(R2.id.button1 )   //绑定一个点击事件
+   public void onViewClicked(View view) {}
+   @OnClick({R.id.ll_product_name, R.id.ll_product_lilv})//绑定多个点击事件
+   public void onViewClicked(View view) {}
+   @OnCheckedChanged({R.id.rg_home,R.id.rg_wealth,R.id.rg_account})
+   public void OnCheckedChangeListener(CompoundButton view, boolean ischanged ){ }
+   @OnEditorAction —->软键盘的功能键
+   @OnFocusChange —->焦点改变
+   @OnItemClick item—->被点击(注意这里有坑，如果item里面有Button等这些有点击的控件事件的，需要设置这些控件属性focusable为false)
+   @OnItemLongClick item—->长按(返回真可以拦截onItemClick)
+   @OnItemSelected —->item被选择事件
+   @OnLongClick —->长按事件
+   @OnPageChange —->页面改变事件
+   @OnTextChanged —->EditText里面的文本变化事件
+   @OnTouch —->触摸事件
+   @Optional —->选择性注入，如果当前对象不存在，就会抛出一个异常，为了压制这个异常，可以在变量或者方法上加入一下注解,让注入变成选择性的,如果目标View存在,则注入, 不存在,则什么事情都不做

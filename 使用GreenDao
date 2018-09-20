@@ -1,0 +1,82 @@
+GreenDao3.2.2使用
+
+1. 配置
+   ① 在project的build.gradle中
+   buildscript {
+       repositories {
+           jcenter()
+           mavenCentral() // add repository
+       }
+       dependencies {
+           classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
+       }
+   }
+   allprojects {
+       repositories {
+           jcenter()
+           //使用数据库升级辅助GreenDaoUpgradeHelper时添加
+           maven { url "https://jitpack.io" }
+       }
+   }
+
+   ② 在APP的build.gradle中
+   apply plugin: 'org.greenrobot.greendao' // apply plugin
+
+   dependencies {
+        compile 'org.greenrobot:greendao:3.2.2' // add library
+        compile 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v1.4.0'//数据库升级辅助
+   }
+
+   ③ 在app的build.gradle 的android路径下配置
+   greendao {
+        schemaVersion 1//<--数据库的版本，用于升级时候进行更改
+        daoPackage 'com.zc.zby.greendao.gen'//这个是生成DAOs、DaoMaster、DaoSession代码保存的包名,默认为entities所在包名
+        targetGenDir 'src/main/java'//生成DAOs、DaoMaster、DaoSession的目录。默认为build/generated/source/greendao
+   }
+
+   ④ 混淆设置
+   ### greenDAO 3
+   -keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+   public static java.lang.String TABLENAME;
+   }
+   -keep class **$Properties
+
+   # If you do not use SQLCipher:
+   -dontwarn org.greenrobot.greendao.database.**
+   # If you do not use RxJava:
+   -dontwarn rx.**
+
+2. 实现
+   ① 编写变量
+   @Entity
+   class UserInfo {
+       @Id(autoincrement =true)
+       private Long id;
+       private String name;
+       private int age;
+       private int sex;
+   }
+
+   ② 编译项目
+      会自动生成get，set方法
+      会生成 DaoMaster、DaoSession、DAOS类，类的位置位于你在app的build.gradle的schema配置
+
+   ③ 注解解释
+   @Entity：告诉GreenDao该对象为实体，只有被@Entity注释的Bean类才能被dao类操作
+   @Id：对象的Id，使用Long类型作为EntityId，否则会报错。(autoincrement = true)表示主键会自增，如果false就会使用旧值
+   @Property：可以自定义字段名，注意外键不能使用该属性
+   @NotNull：属性不能为空
+   @Unique：该属性值必须在数据库中是唯一值
+   @Generated：greenDao生产代码注解，手动修改报错
+
+   ④ 数据库创建
+   在BaseApplication的onCreate()方法中初始化
+   (GreenDaoManager类以及其他类在项目greendao文件夹下)
+   //初始化greendao
+   GreenDaoManager.getInstance();
+
+   ⑤ 增删改查
+   创建Dao类，封装增删改查方法，提高代码可复用性，简洁性
+   (可参考项目中UserDao)
+
+

@@ -1,0 +1,41 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+    repositories {
+        google()
+        jcenter()
+        mavenCentral() // add repository
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        // Butterknife依赖
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
+        // greendao依赖
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        // butterknife框架
+        mavenCentral()
+        maven {
+            // 使用数据库升级辅助GreenDaoUpgradeHelper时添加
+            url "https://jitpack.io"
+        }
+        maven {
+            // 使用fresco-helper库,添加以下依赖
+            url 'https://dl.bintray.com/hpdx/maven/'
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

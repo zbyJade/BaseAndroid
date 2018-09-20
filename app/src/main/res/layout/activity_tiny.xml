@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/drawableImageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_10dp"
+            android:text="本地原图"
+            android:textSize="@dimen/font_16sp" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/drawableImage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            app:actualImageScaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/drawableTinyImageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_10dp"
+            android:text="本地压缩图"
+            android:textSize="@dimen/font_16sp" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/drawableTinyImage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            app:actualImageScaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/assetsImageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_10dp"
+            android:text="网络原图"
+            android:textSize="@dimen/font_16sp" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/assetsImage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            app:actualImageScaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/assetsTinyImageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_10dp"
+            android:text="网络压缩图"
+            android:textSize="@dimen/font_16sp" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/assetsTinyImage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            app:actualImageScaleType="centerCrop" />
+
+    </LinearLayout>
+
+</ScrollView>

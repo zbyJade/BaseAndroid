@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.zc.zby.basicframedemo"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        ndk {
+            abiFilters 'armeabi','x86'//or armeabi-v7a、arm64-v8a、x86
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    greendao {
+        schemaVersion 1//<--数据库的版本，用于升级时候进行更改
+        daoPackage 'com.zc.zby.greendao.gen'//这个是生成DAOs、DaoMaster、DaoSession代码保存的包名,默认为entities所在包名
+        targetGenDir 'src/main/java'
+//生成DAOs、DaoMaster、DaoSession的目录。默认为build/generated/source/greendao
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    // Design
+    implementation 'com.android.support:design:27.1.1'
+    // android-support-multidex解决Dex超出方法数的限制问题
+    implementation 'com.android.support:multidex:1.0.3'
+    // ButterKnife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    // greendao数据存储
+    implementation 'org.greenrobot:greendao:3.2.2'
+    implementation 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v1.4.0'
+    // easyrecyclerview
+    implementation 'com.jude:easyrecyclerview:4.4.2'
+    implementation 'com.jude:rollviewpager:1.2.9'
+    // 仅支持 WebP 静态图，需要添加
+    implementation  'com.facebook.fresco.helper:fresco-helper:2.1.0'
+    // 图片压缩
+    implementation 'com.zxy.android:tiny:0.1.0'
+    // 网络框架
+    implementation 'com.lzy.net:okhttputils:+'
+//    implementation 'com.lzy.net:okhttpserver:+'
+}

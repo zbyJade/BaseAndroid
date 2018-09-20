@@ -1,0 +1,51 @@
+利用android-support-multidex解决65536问题64k问题
+
+1. 依赖 com.android.support:multidex
+   依赖 implementation 'com.android.support:multidex:1.0.3'
+
+2. 修改module的build.gradle文件
+   开启 multiDexEnabled true
+    defaultConfig {
+        minSdkVersion 26
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        // Enabling multidex support.
+        multiDexEnabled true
+    }
+
+3. 继承MultiDexApplication类
+   两种情况(根据自己情况选择一种，我使用的第一种方式)
+   一、 如果我们的APP没有重写过Application类，BaseApplication直接继承MultiDexApplication，然后在manifest.xml中使用
+        ① public class BaseApplication extends MultiDexApplication
+        ② android:name=".base.BaseApplication"
+
+   二、 如果我们已经重写过Application类，重写attachBaseContext(Context)方法，并调用MultiDex.inst①all(this);即可
+        protected void attachBaseContext(Context base) {
+            super.attachBaseContext(base);
+            MultiDex.install(this);
+        }
+
+multidex的构建优化：
+    一、 如果应用中包含lirary工程，可能会发生如下错误：
+         UNEXPECTED TOP-LEVEL EXCEPTION:
+         com.android.dex.DexException: Library dex files are not supported in multi-dex mode
+
+         解决办法：
+         android {
+             dexOptions {
+                 // 禁用预编译
+                 preDexLibraries = false
+             }
+         }
+
+    二、 运行的时候遇到如下错误：
+         UNEXPECTED TOP-LEVEL ERROR:
+         java.lang.OutOfMemoryError: Java heap space
+
+         解决办法：
+         加大java堆内存大小
+         maxProcessCount 4 // this is the default value
+         javaMaxHeapSize "2g"
+
+

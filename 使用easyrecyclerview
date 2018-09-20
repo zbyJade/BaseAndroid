@@ -1,0 +1,67 @@
+十分方便的EasyRecyclerView
+参考文献：https://blog.csdn.net/qq_16430735/article/details/49341563
+
+1. 配置
+   dependencies {
+       compile 'com.camnter.easyrecyclerview:easyrecyclerview:1.3'
+   }
+
+2. 使用
+   ①在xml文件中调用
+   <com.camnter.easyrecyclerview.widget.EasyRecyclerView
+           android:id="@+id/EasyRecyclerView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@android:color/white">
+
+   </com.camnter.easyrecyclerview.widget.EasyRecyclerView>
+   ②设置LayoutManager
+    LinearLayoutManager
+    mEasyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    GridLayoutManager
+    mEasyRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+    StaggeredGridLayoutManager
+    mEasyRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+    ③设置Decoration
+    EasyDividerItemDecoration分隔线
+    mEasyRecyclerView.addItemDecoration(
+        new EasyDividerItemDecoration(
+            this,
+            EasyDividerItemDecoration.VERTICAL_LIST,
+            R.drawable.divider // 或R.layout.divider
+        )
+    )
+    EasyDividerItemDecoration间隔
+    mEasyRecyclerView.addItemDecoration(new EasyBorderDividerItemDecoration(20, 20))
+    ④设置Item动画
+    mEasyRecyclerView.setItemAnimator(ItemAnimator animator)
+    item动画框架
+    https://github.com/gabrielemariotti/RecyclerViewItemAnimators
+    ⑤设置adapter
+    继承EasyRecyclerViewAdapter重新三个方法
+    a. setItemLayouts()
+        public int[] getItemLayouts() {
+            // 可设置多个布局
+             return new int[]{R.layout.one,R.layout.two};
+        }
+    b. onBindRecycleViewHolder()
+        @Override
+            public void onBindRecycleViewHolder(EasyRecyclerViewHolder viewHolder, int position) {
+                // 1.使用ButterKnife
+                // ButterKnife.bind(this, viewHolder.itemView);
+                // 2.获取控件
+                // viewHolder.findViewById(R.id.tv)
+                // 3.获取list的Item bean
+                // UserBean userBean = getItem(position)
+                // 4.获取全部list
+                // ArrayList<UserBean> userList = getList();
+            }
+    c. getRecycleViewItemType()
+        int type = getRecycleViewItemType()
+        // type 的值是跟getItemLayouts()设置的布局有关的
+        // 可在position位置设置不同的布局
+        if(position == 5){
+            return 0;// 0 代表getItemLayouts中位置为0的R.layout.one
+        }else{
+            return 1;// 1 代表getItemLayouts中位置为1的R.layout.two
+        }
